@@ -56,30 +56,3 @@ if __name__ == "__main__":
 	
 	tablegenerate(input, output, format, separate)
 
-
-	
-	
-# def tablegenerate(fileInput, fileOutput, header):
-	# print('------JOB START------\n')
-	# if len(fileInput) <= 5 or fileInput[-4:] != '.csv':
-		# print('Invalid input filename: ' + fileInput)
-		# exit(1)
-	# csvfile = open(fileInput, 'r')
-	# reader = csv.reader(csvfile, delimiter=',')
-	# textfile = open(fileOutput, 'w') if fileOutput != sys.stdout else sys.stdout
-	# textfile.write('<table>\n')
-	# for row in reader:
-		# textfile.write('\t<tr>\n\t\t')
-		# for cell in row:
-			# if header:
-				# textfile.write('<th>'+str(cell)+'</th>')
-			# else:
-				# textfile.write('<td>'+str(cell)+'</td>')
-		# header = False
-		# textfile.write('\n\t</tr>\n')
-	# textfile.write('</table>\n')
-	
-	# print('\n------JOB FINISH' + (' , Output in file'+fileOutput if fileOutput != sys.stdout else '') + '------')	
-			
-		
-
