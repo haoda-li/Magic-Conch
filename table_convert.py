@@ -19,7 +19,7 @@ def tablegenerate(input, output, format, separate):
 	
 	writer.write({'l':'\t', 'h':'\t<tr>\n\t\t<th>', 'm':'| '}[format])
 	writer.write(({'l': ' & ', 'h':'</th><th>', 'm': ' | '}[format]).join(data[0]))
-	writer.write({'l':' \\\\\n', 'h':'<th>\n\t<\\tr>\n', 'm':' |\n'}[format])
+	writer.write({'l':' \\\\\n', 'h':'</th>\n\t</tr>\n', 'm':' |\n'}[format])
 	if format == 'm':
 		line = '| '
 		for cell in data[0]:
@@ -29,11 +29,11 @@ def tablegenerate(input, output, format, separate):
 	for i in range(1, len(data)):
 		writer.write({'l':'\t', 'h':'\t<tr>\n\t\t<td>', 'm':'| '}[format])
 		writer.write(({'l': ' & ', 'h':'</td><td>', 'm': ' | '}[format]).join(data[i]))
-		writer.write({'l':'', 'h':'<td>\n\t<\\tr>\n', 'm':' |\n'}[format])
+		writer.write({'l':'', 'h':'</td>\n\t</tr>\n', 'm':' |\n'}[format])
 		if format == 'l':
 			writer.write(' \\\\\n' if i != len(data) - 1 else '\n')
 	
-	writer.write({'l': '\\end{bmatrix}\\]\n', 'h': '<\\table>\n', 'm':'\n'}[format])
+	writer.write({'l': '\\end{bmatrix}\\]\n', 'h': '</table>\n', 'm':'\n'}[format])
 	print('\n------JOB FINISH' + (' OUTPUT: '+ output if output != "" else '') + '------')	
 	writer.close()
 	
