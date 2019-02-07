@@ -1,0 +1,44 @@
+% Inherit from the article.tplx
+((* extends 'article.tplx' *))
+
+
+% remove inputs
+((* block input_group *))
+((* endblock input_group *))
+
+
+% remove header indexing
+((* block commands *))
+\setcounter{secnumdepth}{0} % Turns off numbering for sections
+((( super() )))
+((* endblock commands *))
+
+
+%===============================================================================
+% Title Page
+%===============================================================================
+
+((* block title -*))
+((*- endblock title *))
+((* block author -*))
+((* endblock author *))
+
+((* block maketitle *))
+
+((*- if nb.metadata.get("latex_metadata", {}).get("title", ""): -*))
+\title{((( nb.metadata["latex_metadata"]["title"] )))}
+((*- else -*))
+\title{((( resources.metadata.name | ascii_only | escape_latex )))}
+((*- endif *))
+
+((*- if nb.metadata.get("latex_metadata", {}).get("author", ""): -*))
+\author{((( nb.metadata["latex_metadata"]["author"] )))}
+((*- else -*))
+\author{Haoda Li}
+((*- endif *))
+
+
+\date{\today}
+\maketitle
+
+((* endblock maketitle *))
