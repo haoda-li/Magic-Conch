@@ -1,17 +1,9 @@
-% Inherit from the article.tplx
-((* extends 'article.tplx' *))
-
+% Inherited from the classic.tplx https://pypi.org/project/nb-pdf-template/#description %
+((*- extends 'classic.tplx' -*))
 
 % remove inputs
 ((* block input_group *))
 ((* endblock input_group *))
-
-
-% remove header indexing
-((* block commands *))
-\setcounter{secnumdepth}{0} % Turns off numbering for sections
-((( super() )))
-((* endblock commands *))
 
 
 %===============================================================================
@@ -42,3 +34,14 @@
 \maketitle
 
 ((* endblock maketitle *))
+
+((*- block margins -*))
+    \geometry{verbose,tmargin=.5in,bmargin=.7in,lmargin=.5in,rmargin=.5in}
+((*- endblock margins -*))
+
+((* block style_settings *))
+        \leftmarginsfalse
+((* endblock style_settings *))
+
+((* set charlim = 94 *))
+
