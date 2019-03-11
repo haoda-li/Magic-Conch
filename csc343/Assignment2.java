@@ -54,29 +54,35 @@ public class Assignment2 extends JDBCSubmission {
             PreparedStatement ps1 = connection.prepareStatement(queryString1);
             ps1.setString(1, countryName);
             ResultSet rs1 = ps1.executeQuery();
-	    	
-			int country_id = -1;
-			while (rs1.next()){
-				country_id = rs1.getInt("id");
-			}
 
-			System.out.println("rs2");
+            int country_id = -1;
+            while (rs1.next()){
+                country_id = rs1.getInt("id");
+            }
+
+            System.out.println("rs2");
 
             String queryString4 =
-                    "select cabinet.id as cabinet_id, time_range.election_id as election_id " +
+                    "select cabinet.id as cabinet_id, time_range.election_id as election_id " + 
                     "from cabinet, " +
-                        "(select v1.e_date as date_1, v2.id as election_id, v2.e_date as date_2 " +
-                        "from (select e_date, election.id, previous_parliament_election_id, previous_ep_election_id, e_type from election where country_id = ?) as v1, (select e_date, election.id, previous_parliament_election_id, previous_ep_election_id, e_type from election where country_id = ?) as v2 " +
-                        "where (v1.e_type = 'Parliamentary election' and v1.previous_parliament_election_id = v2.id) or " +
-                        "(v2.e_type = 'European Parliament' and v1.previous_ep_election_id = v2.id) " +
-                        "order by v2.e_date desc " +
-                        ") as time_range " +
+                    "    (select v1.e_date as date_1, v2.id as election_id, v2.e_date as date_2 " + 
+                    "    from " +
+                    "        (select e_date, election.id, previous_parliament_election_id, previous_ep_election_id, e_type " + 
+                    "        from election " + 
+                    "        where country_id = ?) as v1, " + 
+                    "        (select e_date, election.id, previous_parliament_election_id, previous_ep_election_id, e_type "+ 
+                    "        from election " + 
+                    "        where country_id = ?) as v2 " +
+                    "    where (v1.e_type = 'Parliamentary election' and v1.previous_parliament_election_id = v2.id) or " + 
+                    "        (v2.e_type = 'European Parliament' and v1.previous_ep_election_id = v2.id) " +
+                    "    order by v2.e_date desc " +
+                    "    ) as time_range " +
                     "where cabinet.start_date >= date_2 and cabinet.start_date < date_1 and cabinet.country_id = ? " +
                     "order by time_range.election_id;";
             PreparedStatement ps4 = connection.prepareStatement(queryString4);
-ps4.setInt(1, country_id);
-ps4.setInt(2, country_id);
-ps4.setInt(3, country_id);
+            ps4.setInt(1, country_id);
+            ps4.setInt(2, country_id);
+            ps4.setInt(3, country_id);
             ResultSet rs = ps4.executeQuery();
 
             while (rs.next()) {
@@ -134,7 +140,7 @@ ps4.setInt(3, country_id);
             Assignment2 test = new Assignment2();
             test.connectDB("jdbc:postgresql://localhost:5432/csc343h-lihaoda?currentSchema=parlgov","lihaoda", "");
             ElectionCabinetResult result = test.electionSequence("Japan");
-			System.out.println(result);
+            System.out.println(result);
         } catch (ClassNotFoundException e) {
             System.err.println(e);
         }
