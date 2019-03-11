@@ -50,36 +50,33 @@ public class Assignment2 extends JDBCSubmission {
         List<Integer> cabinets = new ArrayList<>();
 
         try {
-            String queryString1 = "select id from country where name = ?";
+            String queryString1 = "select id from country where name = ?;";
             PreparedStatement ps1 = connection.prepareStatement(queryString1);
             ps1.setString(1, countryName);
             ResultSet rs1 = ps1.executeQuery();
+	    	
+			int country_id = -1;
+			while (rs1.next()){
+				country_id = rs1.getInt("id");
+			}
 
-            String country_id = rs1.getString("id");
-
-            String queryString2 = "drop view if exists valid_elections cascade;";
-            PreparedStatement ps2 = connection.prepareStatement(queryString2);
-            ps2.executeQuery();
-
-            String queryString3 = "create view valid_elections as " +
-                    "select e_date, election.id, previous_parliament_election_id, previous_ep_election_id, e_type " +
-                    "from election where country_id = ?;";
-            PreparedStatement ps3 = connection.prepareStatement(queryString3);
-            ps3.setString(1, country_id);
-            ps3.executeQuery();
+			System.out.println("rs2");
 
             String queryString4 =
                     "select cabinet.id as cabinet_id, time_range.election_id as election_id " +
                     "from cabinet, " +
                         "(select v1.e_date as date_1, v2.id as election_id, v2.e_date as date_2 " +
-                        "from valid_elections as v1, valid_elections as v2 " +
+                        "from (select e_date, election.id, previous_parliament_election_id, previous_ep_election_id, e_type from election where country_id = ?) as v1, (select e_date, election.id, previous_parliament_election_id, previous_ep_election_id, e_type from election where country_id = ?) as v2 " +
                         "where (v1.e_type = 'Parliamentary election' and v1.previous_parliament_election_id = v2.id) or " +
                         "(v2.e_type = 'European Parliament' and v1.previous_ep_election_id = v2.id) " +
                         "order by v2.e_date desc " +
-                        ") as time_range" +
-                    "where cabinet.start_date >= date_2 and cabinet.start_date < date_1 and cabinet.country_id = 5 " +
+                        ") as time_range " +
+                    "where cabinet.start_date >= date_2 and cabinet.start_date < date_1 and cabinet.country_id = ? " +
                     "order by time_range.election_id;";
             PreparedStatement ps4 = connection.prepareStatement(queryString4);
+ps4.setInt(1, country_id);
+ps4.setInt(2, country_id);
+ps4.setInt(3, country_id);
             ResultSet rs = ps4.executeQuery();
 
             while (rs.next()) {
@@ -104,7 +101,7 @@ public class Assignment2 extends JDBCSubmission {
             String description = new String("");
             String queryString = "SELECT description FROM politician_president WHERE politician_president.id = ?";
             PreparedStatement ps = connection.prepareStatement(queryString);
-            ps.setString(1, String.valueOf(politicianName));
+            ps.setInt(1, politicianName);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 description = rs.getString("description");
@@ -133,6 +130,15 @@ public class Assignment2 extends JDBCSubmission {
     public static void main(String[] args) {
         // You can put testing code in here. It will not affect our autotester.
         System.out.println("Hello");
+        try{
+            Assignment2 test = new Assignment2();
+            test.connectDB("jdbc:postgresql://localhost:5432/csc343h-lihaoda?currentSchema=parlgov","lihaoda", "");
+            ElectionCabinetResult result = test.electionSequence("Japan");
+			System.out.println(result);
+        } catch (ClassNotFoundException e) {
+            System.err.println(e);
+        }
+
     }
 
 }
