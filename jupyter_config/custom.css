@@ -1,18 +1,18 @@
 #ipython-main-app {
     position: relative;
-	font-size: 13pt;
-	font-family: 'Cambria', serif;
+	font-size: 12pt;
+	font-family: 'Roboto', serif;
 }
 #jupyter-main-app {
     position: relative;
-	font-size: 13pt;
+	font-size: 12pt;
 }
 .tab-content .row {
 	margin-bottom: 10px;
 }
 
 .text_cell_render {
-	font-size: 16pt;
-	font-family: "Cambria", serif;
+	font-size: 12pt;
+	font-family: "Roboto", serif;
 	line-height: 1.5;
 }
