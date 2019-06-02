@@ -1,0 +1,1 @@
+jupyter nbconvert --template=nbextensions --to=html [].ipynb
