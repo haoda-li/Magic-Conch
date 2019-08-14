@@ -52,7 +52,6 @@ def scrape(driver, path="courses.txt"):
     f.close()
 
 if __name__ == "__main__":
-    
     parser = argparse.ArgumentParser(description='Scrape UofT time table')
     parser.add_argument('-p', help='Give a text file of courses, one course for each line', metavar="path")
     parser.add_argument('-d', help='Give a link to Chrome driver', metavar="driver")

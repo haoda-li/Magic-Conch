@@ -1,9 +1,11 @@
 import selenium
 import time
 import json
+import argparse
 
 import re
 from os import listdir
+import os
 import pandas as pd
 
 from bs4 import BeautifulSoup
@@ -23,7 +25,7 @@ from preparedriver import prepare_driver
 """
 
 
-def scrape(path="./scraped/", driver):
+def scrape(driver, path):
     driver.get("https://course-evals.utoronto.ca/BPI/fbview.aspx?blockid=RzzZcfLdM2FeMolqQu&userid=HpZf268Q2pOk3ecPriBU-rriu3vO-Gi&lng=en")
     WebDriverWait(driver, timeout=10).\
                   until(EC.presence_of_all_elements_located((By.CLASS_NAME, 'gData')))
@@ -53,7 +55,7 @@ def scrape(path="./scraped/", driver):
             f.write(line + "\n")
 
             
-def save(path="./scraped/"):
+def save(path):
     files = [path + f for f in listdir("../scraped/")]
 
     d = {
@@ -100,6 +102,13 @@ def save(path="./scraped/"):
 
     
 if __name__ == "__main__":
-    driver = prepare_driver("./chromedriver")
-    scrape(driver = driver)
-    save()
+    parser = argparse.ArgumentParser(description='Scrape UofT course evaluation')
+    parser.add_argument('-p', help='Give a folder path', metavar="path")
+    parser.add_argument('-d', help='Give a link to Chrome driver', metavar="driver")
+    args = parser.parse_args()
+    driver = prepare_driver(args.d.replace("\\", "/")) if args.d else prepare_driver()
+    path = args.p.replace("\\", "/") if args.p else "./scraped/"
+    if not os.path.isdir(path):
+        os.mkdir(path)
+    scrape(driver, path)
+    save(path)
