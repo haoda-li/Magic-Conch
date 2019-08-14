@@ -1,0 +1,4 @@
+pandas==0.24.2
+requests==2.21.0
+selenium==3.141.0
+beautifulsoup4==4.8.0
