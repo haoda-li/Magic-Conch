@@ -9,31 +9,18 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from requests import get
 
-from selenium import webdriver
+
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common import exceptions 
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
+from prepareserver import prepare_driver
+
 
 """ Scrape UofT Course Evaluation
 """
-
-def prepare_driver(path, headless=True):
-    """ Initiate the Chrome driver installed in path
-    """
-    
-    options = Options()
-    # make the Chrome driver runs in the background
-    if headless:
-        options.add_argument('-headless')
-    options.add_argument("--lang=en-US")
-    options.add_argument('--disable-gpu')
-    
-    driver = webdriver.Chrome(path, options=options)
-    return driver
 
 
 def scrape(path="./scraped/", driver):
