@@ -16,7 +16,7 @@ from selenium.webdriver.common.by import By
 from selenium.common import exceptions 
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
-from prepareserver import prepare_driver
+from preparedriver import prepare_driver
 
 
 """ Scrape UofT Course Evaluation

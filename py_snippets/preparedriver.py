@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
-def prepare_driver(path, headless=True):
+def prepare_driver(path="./chromedriver.exe", headless=True):
     """ Initiate the Chrome driver installed in path
     """
     

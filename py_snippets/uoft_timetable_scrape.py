@@ -1,4 +1,4 @@
-from prepareserver import prepare_driver
+from preparedriver import prepare_driver
 
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,7 +13,7 @@ import csv
 import argparse
 
 
-def scrape(path, driver):
+def scrape(driver, path="courses.txt"):
     with open(path, "r") as f:
         courses = [line[:-1] for line in f]
     f = open("./course_avalibility.csv", "w", encoding="utf-8")
@@ -52,8 +52,13 @@ def scrape(path, driver):
     f.close()
 
 if __name__ == "__main__":
-    driver = prepare_driver("../../Booking.com-Scraper/chromedriver.exe")
-    parser = argparse.ArgumentParser(description='Give a text file of courses, one course for each line')
-    parser.add_argument('path')
-    path = parser.parse_args().path
-    scrape(path, driver)
+    
+    parser = argparse.ArgumentParser(description='Scrape UofT time table')
+    parser.add_argument('-p', help='Give a text file of courses, one course for each line', metavar="path")
+    parser.add_argument('-d', help='Give a link to Chrome driver', metavar="driver")
+    args = parser.parse_args()
+    driver = prepare_driver(args.d.replace("\\", "/")) if args.d else prepare_driver()
+    scrape(driver, args.p.replace("\\", "/")) if args.p else scrape(driver)
+    
+    
+    
