@@ -8,4 +8,4 @@ Download the wanted py file and the `preparedriver.py`
 
 Download Chromedriver https://chromedriver.chromium.org/downloads
 
-`python [xxx.py] [-d path_to_driver] [-p path_to_output_file]`
+`python [xxx.py] [-d path_to_driver] [-p path_to_input_file]`
