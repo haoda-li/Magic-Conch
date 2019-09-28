@@ -16,3 +16,7 @@
 	font-family: "Roboto", serif;
 	line-height: 1.5;
 }
+
+#notebook { padding-top:0px !important; } /* eliminate top gray */
+.container { width:100% !important; } /* eliminate side gray */
+.end_space { min-height:0px !important; } /* eliminate bottom gray */
