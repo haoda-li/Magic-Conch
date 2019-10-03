@@ -34,24 +34,27 @@ def scrape(driver, path="courses.txt"):
             time.sleep(2)
             WebDriverWait(driver, timeout=10).\
                           until(EC.presence_of_all_elements_located((By.CLASS_NAME, 'sectionData')))
-            lecs = driver.find_elements_by_css_selector(".sectionData ")
-            for l in lecs:
-                if "sectionEnrol" in l.get_attribute("class"):
-                    continue
-                infos = [i.text for i in l.find_elements_by_css_selector("td")]
-                row = [course_name]
-                if infos[0][:3] != "LEC":
-                    continue
-                infos[1] = infos[1].replace("\n", "; ")
-                infos[2] = infos[2].replace("\n", "; ")
-                if "no" in infos[-2].lower():
-                    infos[-1] = 0
-                else:
-                    infos[-1] = int(re.findall("\d+", infos[-2])[0])
-                infos[-3], infos[-2] = [int(x) for x in re.findall("\d+", infos[-3])]
-                writer.writerow([course_name] + infos)
+            sections = driver.find_elements_by_css_selector(".courseResults")
+            for s in sections:
+                lecs = s.find_elements_by_css_selector(".sectionData ")
+                section = s.find_element_by_css_selector(".hiCC").text
+                for l in lecs:
+                    if "sectionEnrol" in l.get_attribute("class"):
+                        continue
+                    infos = [i.text for i in l.find_elements_by_css_selector("td")]
+                
+                    if infos[0][:3] != "LEC" or "Cancelled" in infos[6]:
+                         continue
+                    infos[1] = infos[1].replace("\n", "; ")
+                    infos[2] = infos[2].replace("\n", "; ")
+                    if "no" in infos[-2].lower():
+                        infos[-1] = 0
+                    else:
+                        infos[-1] = int(re.findall("\d+", infos[-2])[0])
+                    infos[-3], infos[-2] = [int(x) for x in re.findall("\d+", infos[-3])]
+                    writer.writerow([section] + infos)
         except:
-            print(course_name)
+            print("\n" + course_name)
             continue
     f.close()
 
