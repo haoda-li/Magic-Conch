@@ -8,7 +8,7 @@ def scrape(path="courses.txt", year="20199"):
     data = {'course': [], 'lecture': [], 'capacity': [], 'size': [], 'waitlist': []}
     f = open("./course_avalibility.csv", "w", encoding="utf-8")
     writer = csv.writer(f)
-    writer.writerow(['course', 'lecture', 'prof', 'avaliable', 'class_size', 'waitlist'])
+    writer.writerow(['course', 'section', 'lecture', 'prof', 'avaliable', 'class_size', 'waitlist'])
     for course in courses:
         print("current", course, "       ", end="\r")
         r = requests.get("https://timetable.iit.artsci.utoronto.ca/api/{year}/courses?code={code}".format(year=year, code=course))
@@ -17,6 +17,7 @@ def scrape(path="courses.txt", year="20199"):
                 info = r.json()
                 for course_v in info.values():
                     code = course_v['code']
+                    course_section = course_v['section']
                     for section in course_v['meetings'].values():
                         if section['teachingMethod'] == "LEC":
                             prof = section.get('instructors')
@@ -26,6 +27,7 @@ def scrape(path="courses.txt", year="20199"):
                             else:
                                 prof = "N.A."
                             writer.writerow([code,
+                                       course_section,
                                        section['teachingMethod'] + section['sectionNumber'],
                                        prof,
                                        section.get('enrollmentCapacity', "Cancelled"),
